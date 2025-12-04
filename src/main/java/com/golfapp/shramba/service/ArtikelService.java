@@ -27,19 +27,53 @@ public class ArtikelService {
       return artikelRepository.findById(id).orElse(null);
    }
 
-   // funkcija za dodajanje novih artiklov (ce ze obstaja se le poveca kolicina)
+   // funkcija za dodajanje novih artiklov (če že obstaja se le poveča količina)
    public Artikel createOrAddQuantity(Artikel artikel) {
-      // TO DO
-      return null;
+      Optional<Artikel> existingOpt = artikelRepository.findByImeArtikla(artikel.getImeArtikla());
+
+      // če obstaja prištejemo količino že obstoječemu artiklu
+      if (existingOpt.isPresent()) {
+         Artikel existing = existingOpt.get();
+         // prištej količino
+         existing.setKolicina(existing.getKolicina() + artikel.getKolicina());
+         // ceno najema in opis posodobimo (naj bi bila enaka,
+         // če pa nista, pa želimo najnovejše vrednosti)
+         existing.setOpis(artikel.getOpis());
+         existing.setCenaNajema(artikel.getCenaNajema());
+         return artikelRepository.save(existing);
+      }
+
+      // če imaš polje izposojeno, poskrbi da ni null (npr. 0)
+      if (artikel.getIzposojeno() == null)
+         artikel.setIzposojeno(0);
+
+      return artikelRepository.save(artikel);
    }
 
-   public Artikel update(UUID id, Artikel updated) {
-      // TO DO
-      return null;
+   public Artikel update(@NonNull UUID id, Artikel updated) {
+      Optional<Artikel> optionalArtikel = artikelRepository.findById(id);
+
+      if (optionalArtikel.isEmpty()) {
+         return null;
+      }
+
+      Artikel existing = optionalArtikel.get();
+
+      existing.setImeArtikla(updated.getImeArtikla());
+      existing.setOpis(updated.getOpis());
+      existing.setKolicina(updated.getKolicina());
+      existing.setCenaNajema(updated.getCenaNajema());
+      existing.setPregledano(updated.getPregledano());
+
+      return artikelRepository.save(existing);
    }
 
-   public boolean delete(UUID id) {
-      // TO DO
-      return false;
+   public boolean delete(@NonNull UUID id) {
+      if (!artikelRepository.existsById(id)) {
+         return false;
+      }
+      artikelRepository.deleteById(id);
+      return true;
    }
+
 }

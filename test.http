@@ -1,0 +1,16 @@
+## 1
+GET http://localhost:8081/api/artikli
+
+## 2
+POST http://localhost:8081/api/artikli
+Content-Type: application/json
+{
+  "imeArtikla": "Golf žogica",
+  "opis": "Bele žogice za trening",
+  "kolicina": 50,
+  "cenaNajema": 1.2,
+  "izposojeno": 0
+}
+
+
+GET http://localhost:8081/api/artikli
