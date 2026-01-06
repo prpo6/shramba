@@ -1,13 +1,16 @@
 package com.golfapp.shramba.controller;
 
+import com.golfapp.shramba.dto.RazpolozljivostResponse;
 import com.golfapp.shramba.model.Artikel;
 import com.golfapp.shramba.service.ArtikelService;
+import com.golfapp.shramba.service.IzposojaService;
 
 import io.micrometer.common.lang.NonNull;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,9 +18,11 @@ import java.util.UUID;
 public class ArtikelController {
 
    private final ArtikelService artikelService;
+   private final IzposojaService izposojaService;
 
-   public ArtikelController(ArtikelService artikelService) {
+   public ArtikelController(ArtikelService artikelService, IzposojaService izposojaService) {
       this.artikelService = artikelService;
+      this.izposojaService = izposojaService;
    }
 
    // READ - GET /api/artikli
@@ -34,6 +39,16 @@ public class ArtikelController {
          return ResponseEntity.notFound().build();
       }
       return ResponseEntity.ok(artikel);
+   }
+
+   // READ - GET /api/artikli/{id}/razpolozljivost?od=...&do=...
+   @GetMapping("/{id}/razpolozljivost")
+   public ResponseEntity<RazpolozljivostResponse> getRazpolozljivost(
+           @PathVariable UUID id,
+           @RequestParam("od") LocalDateTime od,
+           @RequestParam("do") LocalDateTime _do
+   ) {
+      return ResponseEntity.ok(izposojaService.getRazpolozljivost(id, od, _do));
    }
 
    // CREATE - POST /api/artikli
