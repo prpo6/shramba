@@ -114,4 +114,15 @@ public class IzposojaService {
         if (req.getPostavke() == null || req.getPostavke().isEmpty())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Manjkajo postavke.");
     }
+
+    public List<Izposoja> getAll() {
+        return izposojaRepository.findAll();
+    }
+
+    public Izposoja getById(UUID id) {
+        return izposojaRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Izposoja ne obstaja.")
+                );
+    }
 }

@@ -19,6 +19,18 @@ public class IzposojaController {
         this.izposojaService = izposojaService;
     }
 
+    // GET /api/izposoje
+    @GetMapping("/izposoje")
+    public ResponseEntity<List<Izposoja>> getAll() {
+        return ResponseEntity.ok(izposojaService.getAll());
+    }
+
+    // GET /api/izposoje/{id}
+    @GetMapping("/izposoje/{id}")
+    public ResponseEntity<Izposoja> getById(@PathVariable UUID id) {
+        return ResponseEntity.ok(izposojaService.getById(id));
+    }
+
     // POST /api/izposoje
     @PostMapping("/izposoje")
     public ResponseEntity<Izposoja> create(@RequestBody CreateIzposojaRequest req) {
