@@ -29,6 +29,13 @@ public class Artikel {
    @Column
    private LocalDateTime pregledano;
 
+   @PrePersist
+   protected void onCreate() {
+      if (this.pregledano == null) {
+         this.pregledano = LocalDateTime.now();
+      }
+   }
+
    // konstruktorja
    public Artikel() {
    }

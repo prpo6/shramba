@@ -14,7 +14,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@RestController @RequestMapping("/api/artikli")
+@RestController 
+@RequestMapping("/api/artikli")
+@CrossOrigin(origins = "*")
 public class ArtikelController {
 
    private final ArtikelService artikelService;

@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*")
 public class IzposojaController {
 
     private final IzposojaService izposojaService;
